@@ -1,11 +1,13 @@
 import vs from "https://deno.land/x/value_schema/mod.ts"
 
 interface Root{
+    id: string
     name: string
 }
 
 interface Child{
-    rootID: string
+    id: string
+    rootId: string
     name: string
 }
 
