@@ -1,10 +1,10 @@
 import vs from "https://deno.land/x/value_schema/mod.ts"
 
-interface GenealogyRoot{
+interface Root{
     name: string
 }
 
-interface GenealogyChiild{
+interface Child{
     rootID: string
     name: string
 }
@@ -25,6 +25,6 @@ export{
     ErrNotFound,
     ErrDuplicate,
     ErrInternalServer,
-    GenealogyRoot,
-    GenealogyChiild,
+    Root,
+    Child,
 }

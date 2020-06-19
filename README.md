@@ -1,5 +1,5 @@
 # pusukbuhit
-[WIP] BATAK Genealogy Data Service
+[WIP] Simple Tree Service
 
 ## Installation
 
