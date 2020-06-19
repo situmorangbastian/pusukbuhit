@@ -9,7 +9,6 @@ import {
 	Validator,
 	SchemaMapValidator,
 	ErrInternalServer,
-    ErrNotFound,
 } from "./entity.ts"
 
 const storeRootHandler = async ({ request, response }: { request: Request, response: Response }) => {

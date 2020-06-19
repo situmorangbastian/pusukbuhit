@@ -19,6 +19,7 @@ const Validator = vs
 
 const SchemaMapValidator = {
     name: Validator.string(),
+    rootId: Validator.string(),
 }
 
 export{

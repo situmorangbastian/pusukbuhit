@@ -1,4 +1,4 @@
-import { Root, ErrNotFound } from "./entity.ts"
+import { Root } from "./entity.ts"
 import { storeRootRepo } from './repository/root.ts'
 
 const storeRoot = async (root: Root) => {
