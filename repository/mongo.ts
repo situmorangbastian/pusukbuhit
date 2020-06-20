@@ -1,11 +1,12 @@
 import { config } from "https://deno.land/x/dotenv/mod.ts"
-import { Database } from 'https://deno.land/x/denodb/mod.ts'
+import { MongoClient } from "https://deno.land/x/mongo@v0.8.0/mod.ts";
 
 const env = config()
 
-const mongo = new Database('mongo', {
-    uri: 'mongodb://'+env.MONGO_HOSTNAME_PORT,
-    database: env.MONGO_DB,
-})
+const mongo = new MongoClient();
+mongo.connectWithUri("mongodb://"+env.MONGO_HOSTNAME_PORT);
 
-export default mongo
+const db = mongo.database("pusukbuhit");
+const rootCollection = db.collection("root");
+
+export { rootCollection }

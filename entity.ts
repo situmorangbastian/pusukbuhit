@@ -17,14 +17,13 @@ const ErrDuplicate = "data already exists"
 
 const Validator = vs
 
-const SchemaMapValidator = {
+const RootValidator = {
     name: Validator.string(),
-    rootId: Validator.string(),
 }
 
 export{
     Validator,
-    SchemaMapValidator,
+    RootValidator,
     ErrNotFound,
     ErrDuplicate,
     ErrInternalServer,

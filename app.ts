@@ -5,11 +5,6 @@ import { Response } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
 import { config } from "https://deno.land/x/dotenv/mod.ts"
 
 import { router } from './handler.ts'
-import { RootModel } from './repository/model.ts'
-import mongo from './repository/mongo.ts'
-
-mongo.link([RootModel])
-await mongo.sync()
 
 const app = new Application()
 
