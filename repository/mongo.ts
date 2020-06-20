@@ -7,6 +7,6 @@ const mongo = new MongoClient();
 mongo.connectWithUri("mongodb://"+env.MONGO_HOSTNAME_PORT);
 
 const db = mongo.database("pusukbuhit");
-const rootCollection = db.collection("root");
+const nodeCollection = db.collection("node");
 
-export { rootCollection }
+export { nodeCollection }

@@ -1,15 +1,11 @@
 import vs from "https://deno.land/x/value_schema/mod.ts"
 
-interface Root{
+interface Node{
     id: string
     name: string
+    parent: string
 }
 
-interface Child{
-    id: string
-    rootId: string
-    name: string
-}
 
 const ErrNotFound = "not found"
 const ErrInternalServer = "internal server error"
@@ -17,16 +13,15 @@ const ErrDuplicate = "data already exists"
 
 const Validator = vs
 
-const RootValidator = {
+const NodeValidator = {
     name: Validator.string(),
 }
 
 export{
     Validator,
-    RootValidator,
+    NodeValidator,
     ErrNotFound,
     ErrDuplicate,
     ErrInternalServer,
-    Root,
-    Child,
+    Node,
 }

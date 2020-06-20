@@ -1,12 +1,12 @@
 import { v4 } from "https://deno.land/std/uuid/mod.ts"
 
 import { 
-    Root, 
+    Node, 
     ErrInternalServer, 
 } from "../entity.ts"
-import { rootCollection } from "./mongo.ts"
+import { nodeCollection } from "./mongo.ts"
 
-const fetchRootRepo = async (keyword: string) => {
+const fetchNodeRepo = async (keyword: string) => {
     try {
         let filter = {}
         if (keyword != ""){
@@ -17,7 +17,7 @@ const fetchRootRepo = async (keyword: string) => {
                 }
             }
         }
-        const data = await rootCollection.find(filter);
+        const data = await nodeCollection.find(filter);
         let result: any = new Array(data.length)
         for (var i = 0; i < data.length; i++) {
             result[i] = {
@@ -34,17 +34,17 @@ const fetchRootRepo = async (keyword: string) => {
     }
 }
 
-const storeRootRepo = async (root: Root) => {
+const storeNodeRepo = async (node: Node) => {
     try {
-        await rootCollection.insertOne({
+        await nodeCollection.insertOne({
             _id: v4.generate(),
-            name: root.name,
+            name: node.name,
             created_at: new Date(),
             updated_at: new Date(),
         });
 
         return {
-            name: root.name
+            name: node.name
         }  
     } catch (e) {
         console.log(e)
@@ -55,6 +55,6 @@ const storeRootRepo = async (root: Root) => {
 }
 
 export {
-    storeRootRepo,
-    fetchRootRepo
+    storeNodeRepo,
+    fetchNodeRepo
 }

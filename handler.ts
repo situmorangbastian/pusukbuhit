@@ -3,18 +3,18 @@ import { Status } from "https://deno.land/std/http/http_status.ts"
 import { Router } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
 import { Request, Response } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
 
-import { storeRoot, fetchRoot } from './usecase.ts'
+import { storeNode, fetchNode } from './usecase.ts'
 import { 
-	Root,
+	Node,
 	Validator,
-	RootValidator,
+	NodeValidator,
 	ErrInternalServer,
 } from "./entity.ts"
 
-const fetchRootHandler = async ({ request, response }: { request: Request, response: Response }) => {
+const fetchNodeHandler = async ({ request, response }: { request: Request, response: Response }) => {
     const keyword = request.url.searchParams.get("keyword") || ""
     
-    const result = await fetchRoot(keyword)
+    const result = await fetchNode(keyword)
     response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
@@ -25,12 +25,12 @@ const fetchRootHandler = async ({ request, response }: { request: Request, respo
     response.status = Status.OK.valueOf()
 }
 
-const storeRootHandler = async ({ request, response }: { request: Request, response: Response }) => {
+const storeNodeHandler = async ({ request, response }: { request: Request, response: Response }) => {
     const body = await request.body()
-    const root: Root = body.value
+    const node: Node = body.value
 
     try {
-        Validator.applySchemaObject(RootValidator, root, (e) => {
+        Validator.applySchemaObject(NodeValidator, node, (e) => {
             const key = e.keyStack.shift()
             if(key !== undefined) {
                 response.body = { error:"invalid "+key }
@@ -42,7 +42,7 @@ const storeRootHandler = async ({ request, response }: { request: Request, respo
        return
     }
 
-    const result = await storeRoot(root)
+    const result = await storeNode(node)
     response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
@@ -58,7 +58,7 @@ const router = new Router()
 router.get('/horas', (context) => {
 	context.response.body = 'ok'
 })
-router.get('/root', fetchRootHandler)
-router.post('/root', storeRootHandler)
+router.get('/node', fetchNodeHandler)
+router.post('/node', storeNodeHandler)
 
 export { router }

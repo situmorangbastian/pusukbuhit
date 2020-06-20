@@ -1,17 +1,17 @@
-import { Root } from "./entity.ts"
-import { storeRootRepo, fetchRootRepo } from './repository/root.ts'
+import { Node } from "./entity.ts"
+import { storeNodeRepo, fetchNodeRepo } from './repository/node.ts'
 
-const fetchRoot = async (keyword: string) => {
-    const result = await fetchRootRepo(keyword)
+const fetchNode = async (keyword: string) => {
+    const result = await fetchNodeRepo(keyword)
     return result
 }
 
-const storeRoot = async (root: Root) => {
-    const result = await storeRootRepo(root)
+const storeNode = async (node: Node) => {
+    const result = await storeNodeRepo(node)
     return result
 }
 
 export{
-    fetchRoot,
-    storeRoot
+    fetchNode,
+    storeNode
 }
