@@ -18,6 +18,6 @@ app.use(({ response }: { response: Response }) => {
 })
 
 const env = config()
-const HOST_PORT = env.APP_HOST+":"+env.APP_PORT
-console.log("Listening on: "+HOST_PORT)
-await app.listen(HOST_PORT)
+const PORT = parseInt(env.APP_PORT)
+console.log("Listening on: "+PORT)
+await app.listen({port: PORT})
