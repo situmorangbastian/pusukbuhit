@@ -9,7 +9,6 @@ interface Node{
 
 const ErrNotFound = "not found"
 const ErrInternalServer = "internal server error"
-const ErrDuplicate = "data already exists"
 
 const Validator = vs
 
@@ -21,7 +20,6 @@ export{
     Validator,
     NodeValidator,
     ErrNotFound,
-    ErrDuplicate,
     ErrInternalServer,
     Node,
 }
