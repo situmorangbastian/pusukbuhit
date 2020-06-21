@@ -14,3 +14,9 @@ Make sure to set the .env file (see: .env.example).
 To start APP, run:
 
 `make run`
+
+## Running on Docker
+
+`make docker`
+
+`make docker-run`
