@@ -1,5 +1,5 @@
 # pusukbuhit
-[WIP] Simple Tree Service
+Simple Tree Service
 
 ## Installation
 
