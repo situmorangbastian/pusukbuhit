@@ -3,7 +3,6 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts"
 import { 
     Node, 
     ErrInternalServer,
-    ErrNotFound, 
 } from "../entity.ts"
 import { nodeCollection } from "./mongo.ts"
 
