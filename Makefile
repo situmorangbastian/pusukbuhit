@@ -1,11 +1,11 @@
 lint:
 	deno lint --unstable
 
-run:
-	deno run --allow-read --allow-net --allow-write  --allow-plugin ./app.ts
-
 run-with-reload:
 	deno run --reload --allow-read --allow-net --allow-write  --allow-plugin ./app.ts
+
+run:
+	deno run --allow-read --allow-net --allow-write  --allow-plugin ./app.ts
 
 docker:
 	docker build -t pusukbuhit .
