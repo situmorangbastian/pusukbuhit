@@ -90,8 +90,9 @@ const storeNodeHandler = async (ctx: Context) => {
 
 const router = new Router()
 
-router.get('/horas', (context) => {
+router.get('/health', (context) => {
 	context.response.body = 'ok'
+    context.response.status = Status.OK.valueOf()
 })
 router.get('/node', fetchNodeHandler)
 router.get('/node/:id', getNodeHandler)
