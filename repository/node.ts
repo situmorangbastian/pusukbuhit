@@ -26,12 +26,14 @@ const fetchNodeRepo = async ({parent, keyword}:{parent: string, keyword: string}
         }
 
         const data = await nodeCollection.find(filter).toArray();
-        let result: any = new Array(data.length)
-        for (var i = 0; i < data.length; i++) {
-            result[i] = {
-                id: data[i]._id,
-                name: data[i].name,
+        const result = new Array<Node>()
+        for (let i = 0; i < data.length; i++) {
+            const node =  {
+                id:data[i]._id,
+                name:data[i].name,
+                parent:""
             }
+            result.push(node)
         }
         return result
     } catch (e) {
@@ -60,12 +62,11 @@ const getNodeRepo = async (id: string) => {
         }
 
         const dataChilds = await fetchNodeRepo(filterChild)
-        if (dataChilds.length == 0){
-            var childs: Node[] = [];
+        if (dataChilds.toString.length == 0){
             return {
                 id: data._id.$oid,
                 name:data.name,
-                childs:childs
+                childs:new Array<Node>(),
             }
         }
 

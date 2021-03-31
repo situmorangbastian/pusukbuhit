@@ -11,13 +11,11 @@ const fetchNode = async (keyword: string) => {
 }
 
 const getNode = async (id: string) => {
-    let result = await getNodeRepo(id)
-    return result
+    return await getNodeRepo(id)
 }
 
 const storeNode = async (node: Node) => {
-    const result = await storeNodeRepo(node)
-    return result
+    return await storeNodeRepo(node)
 }
 
 export{
