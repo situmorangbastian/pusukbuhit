@@ -1,7 +1,8 @@
 import { Status } from "https://deno.land/std/http/http_status.ts"
 
-import { Router } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
-import { Request, Response } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
+import { Router } from 'https://deno.land/x/oak@v6.5.0/mod.ts'
+import { Context } from 'https://deno.land/x/oak@v6.5.0/context.ts';
+import { getQuery } from 'https://deno.land/x/oak@v6.5.0/helpers.ts';
 
 import { storeNode, fetchNode, getNode } from './usecase.ts'
 import { 
@@ -12,47 +13,64 @@ import {
     ErrNotFound,
 } from "./entity.ts"
 
-const fetchNodeHandler = async ({ request, response }: { request: Request, response: Response }) => {
-    const keyword = request.url.searchParams.get("keyword") || ""
+const fetchNodeHandler = async (ctx: Context) => {
+    const keyword = ctx.request.url.searchParams.get("keyword") || ""
     
     const result = await fetchNode(keyword)
-    response.body = result
+    ctx.response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
-            response.status = Status.InternalServerError.valueOf()
+            ctx.response.status = Status.InternalServerError.valueOf()
             return
         }
     }
-    response.status = Status.OK.valueOf()
+    ctx.response.status = Status.OK.valueOf()
 }
 
-const getNodeHandler = async ({ params, request, response }: { params: {id: string}, request: Request, response: Response }) => {
+const getNodeHandler = async (ctx: Context) => {
+    const params = getQuery(ctx, { mergeParams: true });
     const result = await getNode(params.id)
-    response.body = result
-    switch(result.error) {
-        case ErrNotFound:{
-            response.status = Status.NotFound.valueOf()
-            return
-        } 
-        case ErrInternalServer:{ 
-            response.status = Status.InternalServerError.valueOf()
-            return
+    ctx.response.body = result
+    if (result.error !== undefined){
+        switch(result.error) {
+            case ErrNotFound:{
+                ctx.response.status = Status.NotFound.valueOf()
+                return
+            } 
+            case ErrInternalServer:{ 
+                ctx.response.status = Status.InternalServerError.valueOf()
+                return
+            }
         }
     }
-    response.status = Status.OK.valueOf()
+    
+    ctx.response.status = Status.OK.valueOf()
 }
 
-const storeNodeHandler = async ({ request, response }: { request: Request, response: Response }) => {
-    const body = await request.body()
-    const node: Node = body.value
+const storeNodeHandler = async (ctx: Context) => {
+    const body = ctx.request.body();
+    if (body.type !== "json") {
+        ctx.response.status = Status.BadRequest
+        ctx.response.body = {
+            "message": "body is must content type application/json"
+        }
+        return
+    }
+
+    const value = await body.value;
+    const node: Node = {
+        id: value.id,
+        name: value.name,
+        parent: value.parent,
+    }
 
     try {
         Validator.applySchemaObject(NodeValidator, node, (e) => {
             const key = e.keyStack.shift()
             if(key !== undefined) {
-                response.body = { error:"invalid "+key }
-                response.status = Status.BadRequest.valueOf()
-                throw(response)
+                ctx.response.body = { error:"invalid "+key }
+                ctx.response.status = Status.BadRequest.valueOf()
+                throw(ctx.response)
             } 
         })
     } catch (response) {
@@ -60,14 +78,14 @@ const storeNodeHandler = async ({ request, response }: { request: Request, respo
     }
 
     const result = await storeNode(node)
-    response.body = result
+    ctx.response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
-            response.status = Status.InternalServerError.valueOf()
+            ctx.response.status = Status.InternalServerError.valueOf()
             return
         }
     }
-    response.status = Status.Created.valueOf()
+    ctx.response.status = Status.Created.valueOf()
 }
 
 const router = new Router()

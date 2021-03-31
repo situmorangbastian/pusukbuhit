@@ -3,6 +3,7 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts"
 import { 
     Node, 
     ErrInternalServer,
+    ErrNotFound,
 } from "../entity.ts"
 import { nodeCollection } from "./mongo.ts"
 
@@ -24,7 +25,7 @@ const fetchNodeRepo = async ({parent, keyword}:{parent: string, keyword: string}
             }
         }
 
-        const data = await nodeCollection.find(filter);
+        const data = await nodeCollection.find(filter).toArray();
         let result: any = new Array(data.length)
         for (var i = 0; i < data.length; i++) {
             result[i] = {
@@ -48,13 +49,9 @@ const getNodeRepo = async (id: string) => {
         }
         const data = await nodeCollection.findOne(filter)
         if (data == null){
-            return data
-        }
-
-        let result = {
-            id: data._id,
-            name:data.name,
-            childs:[]
+            return {
+                error: ErrNotFound
+            }
         }
 
         const filterChild = {
@@ -64,11 +61,19 @@ const getNodeRepo = async (id: string) => {
 
         const dataChilds = await fetchNodeRepo(filterChild)
         if (dataChilds.length == 0){
-            return result
+            var childs: Node[] = [];
+            return {
+                id: data._id.$oid,
+                name:data.name,
+                childs:childs
+            }
         }
 
-        result.childs = dataChilds
-        return result
+        return {
+            id: data._id.$oid,
+            name:data.name,
+            childs:dataChilds
+        }
     } catch (e) {
         console.log(e)
         return {

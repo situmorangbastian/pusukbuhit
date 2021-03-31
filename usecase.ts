@@ -1,4 +1,4 @@
-import { Node, ErrNotFound } from "./entity.ts"
+import { Node } from "./entity.ts"
 import { storeNodeRepo, fetchNodeRepo, getNodeRepo } from './repository/node.ts'
 
 const fetchNode = async (keyword: string) => {
@@ -12,17 +12,6 @@ const fetchNode = async (keyword: string) => {
 
 const getNode = async (id: string) => {
     let result = await getNodeRepo(id)
-    if (result == null){
-        return result = {
-            error: ErrNotFound
-        }
-    }
-    if (result.childs.length == 0){
-        return result = {
-            id:result.id,
-            name:result.name
-        }
-    }
     return result
 }
 

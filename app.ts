@@ -1,7 +1,7 @@
 import { Status } from "https://deno.land/std/http/http_status.ts"
 
-import { Application } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
-import { Response } from 'https://deno.land/x/oak@v4.0.0/mod.ts'
+import { Application } from 'https://deno.land/x/oak@v6.5.0/mod.ts'
+import { Response } from 'https://deno.land/x/oak@v6.5.0/mod.ts'
 import { config } from "https://deno.land/x/dotenv/mod.ts"
 
 import { router } from './handler.ts'
