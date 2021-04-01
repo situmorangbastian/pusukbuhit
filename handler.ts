@@ -20,11 +20,11 @@ const fetchNodeHandler = async (ctx: Context) => {
     ctx.response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
-            ctx.response.status = Status.InternalServerError.valueOf()
+            ctx.response.status = Status.InternalServerError
             return
         }
     }
-    ctx.response.status = Status.OK.valueOf()
+    ctx.response.status = Status.OK
 }
 
 const getNodeHandler = async (ctx: Context) => {
@@ -34,17 +34,17 @@ const getNodeHandler = async (ctx: Context) => {
     if (result.error !== undefined){
         switch(result.error) {
             case ErrNotFound:{
-                ctx.response.status = Status.NotFound.valueOf()
+                ctx.response.status = Status.NotFound
                 return
             } 
             case ErrInternalServer:{ 
-                ctx.response.status = Status.InternalServerError.valueOf()
+                ctx.response.status = Status.InternalServerError
                 return
             }
         }
     }
     
-    ctx.response.status = Status.OK.valueOf()
+    ctx.response.status = Status.OK
 }
 
 const storeNodeHandler = async (ctx: Context) => {
@@ -69,7 +69,7 @@ const storeNodeHandler = async (ctx: Context) => {
             const key = e.keyStack.shift()
             if(key !== undefined) {
                 ctx.response.body = { error:"invalid "+key }
-                ctx.response.status = Status.BadRequest.valueOf()
+                ctx.response.status = Status.BadRequest
                 throw(ctx.response)
             } 
         })
@@ -81,18 +81,18 @@ const storeNodeHandler = async (ctx: Context) => {
     ctx.response.body = result
     switch(result.error) { 
         case ErrInternalServer:{ 
-            ctx.response.status = Status.InternalServerError.valueOf()
+            ctx.response.status = Status.InternalServerError
             return
         }
     }
-    ctx.response.status = Status.Created.valueOf()
+    ctx.response.status = Status.Created
 }
 
 const router = new Router()
 
 router.get('/health', (context) => {
 	context.response.body = 'ok'
-    context.response.status = Status.OK.valueOf()
+    context.response.status = Status.OK
 })
 router.get('/node', fetchNodeHandler)
 router.get('/node/:id', getNodeHandler)
