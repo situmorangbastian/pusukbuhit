@@ -16,15 +16,19 @@ import {
 const fetchNodeHandler = async (ctx: Context) => {
     const keyword = ctx.request.url.searchParams.get("keyword") || ""
     
-    const result = await fetchNode(keyword)
-    ctx.response.body = result
-    switch(result.error) { 
-        case ErrInternalServer:{ 
-            ctx.response.status = Status.InternalServerError
-            return
+    await fetchNode(keyword).then(function(value){
+        ctx.response.body = value
+        ctx.response.status = Status.OK
+        return
+    }).catch(function(e){
+        ctx.response.body = e
+        switch(e) { 
+            case ErrInternalServer:{ 
+                ctx.response.status = Status.InternalServerError
+                return
+            }
         }
-    }
-    ctx.response.status = Status.OK
+    })
 }
 
 const getNodeHandler = async (ctx: Context) => {

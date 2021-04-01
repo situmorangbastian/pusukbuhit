@@ -29,7 +29,7 @@ const fetchNodeRepo = async ({parent, keyword}:{parent: string, keyword: string}
         const result = new Array<Node>()
         for (let i = 0; i < data.length; i++) {
             const node =  {
-                id:data[i]._id,
+                id:data[i]._id.$oid,
                 name:data[i].name,
                 parent:""
             }
